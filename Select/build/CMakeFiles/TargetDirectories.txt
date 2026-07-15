@@ -1,0 +1,3 @@
+/home/syjl/tcpServerIO/Select/build/CMakeFiles/select_IO.dir
+/home/syjl/tcpServerIO/Select/build/CMakeFiles/edit_cache.dir
+/home/syjl/tcpServerIO/Select/build/CMakeFiles/rebuild_cache.dir
