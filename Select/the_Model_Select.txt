@@ -1,0 +1,63 @@
+#===============select 实现TCP并发服务器的模型===============#
+
+sfd=socket();       //创建用于连接的套接字文件
+
+bind();             //绑定ip地址和端口号
+
+listen();           //监听
+
+fd_set readfds,tempfds;     //定义文件描述符集合
+
+FD_ZERO();          //清空容器，因为刚创建好是在栈区，都是随机值
+
+FD_SET();           //将初始就有的文件描述符放入到容器中
+
+int maxfd=sfd;      //记录最大的文件描述符
+
+while(1)
+{
+    tempfds=readfds;    //备份一份容器
+
+    select(maxfd,&readfds,NULL,NULL,NULL);      //阻塞等待集合中是否有事件产生
+
+    //判断相关文件描述符是否在集合中
+    if(FD_ISSET(sfd,&readfds))
+    {
+        newfd=accept();         //接收客户端请求
+        FD_SET(newfd,&readfds);     //将新文件描述符加入到集合中
+
+        //更新最大文件描述符
+        if(maxfd<newfd)
+        maxfd=newfd;
+    }
+
+    //判断是否是客户端发来消息
+    for(int i=4;i<=maxfd;i++)
+    {
+        int res=recv();
+        if(res==0)
+        {
+            close(i);
+
+            //将该文件描述符从集合中删除
+            FD_CLR(i,&readfds);
+
+            //更新最大文件描述符maxfd
+            for(int k=maxfd;k>=0;k++)
+            {
+                if(FD_ISSET(k,&readfds))
+                {
+                    maxfd=k;
+                    break;
+                }
+            }
+
+            continue;       //不再往下进行，直接进行下一次select循环
+        }
+
+        send();
+
+    }
+}
+
+close(sfd);     //关闭监听
