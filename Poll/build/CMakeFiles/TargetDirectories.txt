@@ -1,0 +1,3 @@
+/home/syjl/tcpServerIO/Poll/build/CMakeFiles/poll_IO.dir
+/home/syjl/tcpServerIO/Poll/build/CMakeFiles/edit_cache.dir
+/home/syjl/tcpServerIO/Poll/build/CMakeFiles/rebuild_cache.dir
